@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORIZON BAC PRO & CAP - Plateforme de Suivi des Compétences</title>
+    <link rel="icon" href="images/Logo Horizon BP.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --primary-light: #fb923c;
+            --accent: #fbbf24;
+            --accent-dark: #f59e0b;
+            --bg-dark: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --bg-card-hover: #2a2a2a;
+            --text: #fafafa;
+            --text-muted: #a3a3a3;
+            --text-light: #d4d4d4;
+            --gradient-1: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            --gradient-2: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            --gradient-3: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            --shadow-glow: 0 0 40px rgba(249, 115, 22, 0.4);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.85);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        nav.scrolled {
+            padding: 0.6rem 2rem;
+            background: rgba(10, 10, 10, 0.98);
+        }
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        .nav-logo span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-cta {
+            background: var(--gradient-1);
+            color: white !important;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: transform 0.3s, box-shadow 0.3s !important;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(249, 115, 22, 0.2) 0%, transparent 50%);
+            animation: pulse-bg 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--primary) 0px,
+                var(--primary) 20px,
+                transparent 20px,
+                transparent 40px
+            );
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--primary-light);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 .accent-text {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(249, 115, 22, 0.6);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .hero-video {
+            margin-top: 3rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease 0.5s both;
+        }
+
+        .hero-video video {
+            width: 100%;
+            display: block;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* ===== FEATURES GRID ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(249, 115, 22, 0.3);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-icon.blue { background: rgba(249, 115, 22, 0.15); }
+        .feature-icon.amber { background: rgba(245, 158, 11, 0.15); }
+        .feature-icon.green { background: rgba(34, 197, 94, 0.15); }
+        .feature-icon.purple { background: rgba(139, 92, 246, 0.15); }
+        .feature-icon.red { background: rgba(239, 68, 68, 0.15); }
+        .feature-icon.cyan { background: rgba(6, 182, 212, 0.15); }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ===== AUDIENCE TABS ===== */
+        .audience-section {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .audience-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--primary) 0px,
+                var(--primary) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            background: rgba(0,0,0,0.3);
+            padding: 0.35rem;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn.active {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: var(--text);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .tab-feature {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-feature::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tab-feature:hover::before {
+            opacity: 1;
+        }
+
+        .tab-feature:hover {
+            border-color: rgba(249, 115, 22, 0.2);
+            background: rgba(249, 115, 22, 0.05);
+        }
+
+        .tab-feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(249, 115, 22, 0.1);
+            border-radius: 10px;
+        }
+
+        .tab-feature h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+        }
+
+        .tab-feature p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* ===== SCREENSHOTS ===== */
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .screenshot-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .screenshot-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .screenshot-card:hover::before {
+            opacity: 1;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+        }
+
+        .screenshot-card .caption {
+            padding: 1rem 1.25rem;
+        }
+
+        .screenshot-card .caption h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .screenshot-card .caption p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* ===== VIDEOS ===== */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .video-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .video-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .video-card:hover::before {
+            opacity: 1;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            background: #000;
+        }
+
+        .video-caption {
+            padding: 1rem 1.25rem;
+        }
+
+        .video-caption h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .video-caption p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .lightbox-close:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tech-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tech-card:hover::before {
+            opacity: 1;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(249, 115, 22, 0.3);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .tech-card .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-card h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ===== VISION BANNER ===== */
+        .vision-banner {
+            background: var(--gradient-1);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vision-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.1) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.1) 75%);
+            background-size: 40px 40px;
+            background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+            opacity: 0.3;
+        }
+
+        .vision-banner::after {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .vision-banner h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vision-banner p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 4px solid var(--primary);
+            padding: 3rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-dark) 0%, #000 100%);
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo img {
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .footer-logo span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-tagline {
+            font-style: italic;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.98);
+                flex-direction: column;
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .audience-section {
+                padding: 1.5rem;
+            }
+
+            .tab-buttons {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vision-banner {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <img src="images/Logo Horizon BP.png" alt="Horizon Logo">
+                <span>HORIZON</span>
+            </a>
+            <button class="mobile-toggle" onclick="toggleNav()" aria-label="Menu">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+                <li><a href="#captures">Captures</a></li>
+                <li><a href="#videos">Vidéos</a></li>
+                <li><a href="#accessibilite">Accessibilité</a></li>
+                <li><a href="#fonctionnalites" class="nav-cta">Découvrir</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🚀 Plateforme de nouvelle génération</div>
+            <h1>
+                <span class="gradient-text">HORIZON</span><br>
+                <span class="accent-text">BAC PRO & CAP</span>
+            </h1>
+            <p>La plateforme numérique de référence pour le suivi des compétences en maintenance des véhicules. Le carnet de réussite papier en un écosystème dynamique, immersif et assisté par l'IA.</p>
+            <div class="hero-buttons">
+                <a href="#fonctionnalites" class="btn btn-primary">
+                    <span>📋</span> Découvrir les fonctionnalités
+                </a>
+                <a href="#captures" class="btn btn-secondary">
+                    <span>📸</span> Voir les captures
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">Bac Pro</div>
+                    <div class="stat-label">Maintenance des véhicules</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">CAP</div>
+                    <div class="stat-label">Maintenance des véhicules</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">IA</div>
+                    <div class="stat-label">Tutorat intelligent</div>
+                </div>
+            </div>
+            <div class="hero-video">
+                <video controls preload="metadata" poster="images/Logo Horizon BP.png">
+                    <source src="images/Vidéo Horizon Bac pro (2).mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISION -->
+    <section id="vision">
+        <div class="section-header reveal">
+            <span class="section-tag">Notre Vision</span>
+            <h2>L'atelier pédagogique connecté</h2>
+            <p>Combler le fossé entre l'atelier pédagogique et l'expérience en entreprise, tout en offrant aux enseignants des outils de pilotage basés sur la donnée.</p>
+        </div>
+    </section>
+
+    <!-- FONCTIONNALITÉS -->
+    <section id="fonctionnalites">
+        <div class="section-header reveal">
+            <span class="section-tag">Fonctionnalités</span>
+            <h2>Un écosystème complet</h2>
+            <p>De l'administration à l'apprenant, chaque acteur trouve ses outils.</p>
+        </div>
+
+        <div class="audience-section reveal">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('teachers')" id="tab-teachers">
+                    👨‍🏫 Enseignants
+                </button>
+                <button class="tab-btn" onclick="switchTab('students')" id="tab-students">
+                    🎓 Apprenants
+                </button>
+            </div>
+
+            <!-- TEACHERS TAB -->
+            <div class="tab-content active" id="content-teachers">
+                <div class="tab-features">
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🏫</div>
+                        <div>
+                            <h4>Architecture Multi-Tenancy</h4>
+                            <p>Isolation stricte des données par établissement via un schoolId unique. Sécurité et confidentialité garanties.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">👑</div>
+                        <div>
+                            <h4>Master Admin</h4>
+                            <p>Registre central pour la gestion des licences et des accès établissements. Pilotage à grande échelle.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">📊</div>
+                        <div>
+                            <h4>Pilotage de Classe</h4>
+                            <p>Assigner des TP en masse, suivre la progression en temps réel et exporter les notes vers Pronote (CSV).</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">📝</div>
+                        <div>
+                            <h4>Évaluation Certificative</h4>
+                            <p>Grille de compétences (NA, EC, A, M) alimentant automatiquement le livret scolaire. Conservation des données de certification jusqu'à la terminale pour l'évaluation finale.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🔐</div>
+                        <div>
+                            <h4>Validation Sécurisée</h4>
+                            <p>Système d'Appel Professeur avec validation par mot de passe pour les étapes critiques.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🛠️</div>
+                        <div>
+                            <h4>Création de TP Intégrée</h4>
+                            <p>Concevez et paramétrez vos travaux pratiques directement dans l'application. Assignation en un clic aux classes et élèves.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STUDENTS TAB -->
+            <div class="tab-content" id="content-students">
+                <div class="tab-features">
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🔧</div>
+                        <div>
+                            <h4>Mon Atelier Virtuel</h4>
+                            <p>Accès direct aux TP assignés avec guidage étape par étape. Un atelier en poche.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🤖</div>
+                        <div>
+                            <h4>Assistant Pédagogique IA</h4>
+                            <p>Un tuteur intelligent (Genkit/Gemini) qui aide à la résolution de problèmes sans donner la réponse brute.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🏭</div>
+                        <div>
+                            <h4>Suivi PFMP</h4>
+                            <p>Le Book : journal d'activités techniques réalisées en garage, archivage des entretiens et bilans.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">🎯</div>
+                        <div>
+                            <h4>Portfolio & Gamification</h4>
+                            <p>Carnet de réussite exportable en PDF avec système de badges techniques motivants.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">💬</div>
+                        <div>
+                            <h4>Entretiens PFMP</h4>
+                            <p>Archivage des synthèses d'entretiens professionnels avec évaluations des tuteurs.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">📄</div>
+                        <div>
+                            <h4>Bilans PFMP</h4>
+                            <p>Centralisation des évaluations des tuteurs en entreprise pour un suivi complet.</p>
+                        </div>
+                    </div>
+                    <div class="tab-feature">
+                        <div class="tab-feature-icon">📚</div>
+                        <div>
+                            <h4>Parcours Certificatif</h4>
+                            <p>Vos évaluations de compétences sont conservées de la seconde jusqu'à la terminale pour la certification finale du Bac Pro.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURES CARDS -->
+        <div class="features-grid" style="margin-top: 3rem;">
+            <div class="feature-card reveal">
+                <div class="feature-icon blue">⚡</div>
+                <h3>Temps Réel</h3>
+                <p>Suivi instantané de la progression de chaque élève. Tableaux de bord dynamiques et notifications.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon amber">🎓</div>
+                <h3>Certification</h3>
+                <p>Évaluation des compétences selon les référentiels officiels Bac Pro et CAP maintenance.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon green">📱</div>
+                <h3>Multi-Device</h3>
+                <p>Accessible sur tablette, smartphone et ordinateur. L'atelier toujours avec vous.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon purple">🔒</div>
+                <h3>Sécurité</h3>
+                <p>Authentification Firebase sécurisée. Données chiffrées et sauvegardées en temps réel.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon red">📊</div>
+                <h3>Analytics</h3>
+                <p>Données de progression pour piloter les décisions pédagogiques. Export Pronote intégré.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon cyan">🤝</div>
+                <h3>Collaboration</h3>
+                <p>Lien enseignant-entreprise-apprenant. Bilans PFMP partagés et entretiens archivés.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon green">📋</div>
+                <h3>Certification Durable</h3>
+                <p>Conservation des évaluations de compétences tout au long du parcours, de la seconde à la terminale, pour la certification finale.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon amber">🛠️</div>
+                <h3>Création de TP Intégrée</h3>
+                <p>Module de création de TP directement intégré à l'application. Les enseignants concevoient, paramètrent et assignent leurs travaux pratiques sans quitter la plateforme.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAPTURES D'ÉCRAN -->
+    <section id="captures">
+        <div class="section-header reveal">
+            <span class="section-tag">Interface</span>
+            <h2>Captures d'écran</h2>
+            <p>Découvrez l'interface en action à travers les différentes fonctionnalités.</p>
+        </div>
+
+        <div class="screenshots-grid">
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Logo Horizon BP.png" alt="Logo Horizon">
+                <div class="caption">
+                    <h4>Logo Horizon</h4>
+                    <p>Identité visuelle de la plateforme</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Expert ia.PNG" alt="Expert IA">
+                <div class="caption">
+                    <h4>Assistant IA</h4>
+                    <p>Tuteur intelligent pour l'aide aux TP</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Capture1 Ai.PNG" alt="Capture AI">
+                <div class="caption">
+                    <h4>Interface IA</h4>
+                    <p>Interaction avec l'assistant pédagogique</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Ex ia reponse.PNG" alt="Réponse IA">
+                <div class="caption">
+                    <h4>Réponse IA</h4>
+                    <p>Le tuteur guide sans donner la réponse</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Ex IA question hors sujet.PNG" alt="IA hors sujet">
+                <div class="caption">
+                    <h4>Gestion hors-sujet</h4>
+                    <p>L'IA recentre sur le contexte pédagogique</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Discussion 1.2.PNG" alt="Discussion">
+                <div class="caption">
+                    <h4>Discussion</h4>
+                    <p>Échange avec l'assistant IA</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Ebook reponse prof.PNG" alt="Réponse prof">
+                <div class="caption">
+                    <h4>Validation Enseignant</h4>
+                    <p>Système de validation sécurisée</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Exemple retour activitée en stage mon ebook.PNG" alt="Activité stage">
+                <div class="caption">
+                    <h4>Activités de Stage</h4>
+                    <p>Journal d'activités techniques en garage</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Retour suivi en entreprise prof.PNG" alt="Suivi entreprise">
+                <div class="caption">
+                    <h4>Suivi Entreprise</h4>
+                    <p>Pilotage des PFMP par l'enseignant</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Consigne entretien prof et élève.PNG" alt="Entretien">
+                <div class="caption">
+                    <h4>Consigne Entretien</h4>
+                    <p>Préparation des entretiens PFMP</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Exe entretien pfmp eleve et prof.PNG" alt="Entretien PFMP">
+                <div class="caption">
+                    <h4>Entretien PFMP</h4>
+                    <p>Synthèse d'entretien professionnel</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Bilan pfmp.PNG" alt="Bilan PFMP">
+                <div class="caption">
+                    <h4>Bilan PFMP</h4>
+                    <p>Évaluation globale de la période en entreprise</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Retour bilan pfmp vu élève.PNG" alt="Bilan élève">
+                <div class="caption">
+                    <h4>Bilan PFMP (Vue Élève)</h4>
+                    <p>L'apprenant consulte son bilan</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Eval compétences pfmp.PNG" alt="Eval compétences">
+                <div class="caption">
+                    <h4>Évaluation Compétences</h4>
+                    <p>Grille d'évaluation des compétences PFMP</p>
+                </div>
+            </div>
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/Eval pfmp commentaire tuteur et prof.PNG" alt="Commentaires">
+                <div class="caption">
+                    <h4>Commentaires Tuteur & Prof</h4>
+                    <p>Retravaux et évaluations croisées</p>
+                </div>
+            </div>
+
+            <div class="screenshot-card reveal" onclick="openLightbox(this)">
+                <img src="images/generated-image (1).png" alt="Generated 1">
+                <div class="caption">
+                    <h4>Vue Atelier</h4>
+                    <p>L'atelier virtuel en action</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" aria-label="Fermer">✕</button>
+        <img src="" alt="Capture d'écran agrandie" id="lightbox-img">
+    </div>
+
+    <!-- VIDÉOS DE DÉMONSTRATION -->
+    <section id="videos">
+        <div class="section-header reveal">
+            <span class="section-tag">Démonstration</span>
+            <h2>Vidéos de présentation</h2>
+            <p>Découvrez Horizon en action à travers ces captures vidéo.</p>
+        </div>
+
+        <div class="videos-grid">
+            <div class="video-card reveal">
+                <video controls preload="metadata">
+                    <source src="vidéo/Screen_Recording_20260609_070525_Samsung.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+                <div class="video-caption">
+                    <h4>Démonstration 1</h4>
+                    <p>Présentation de l'interface principale</p>
+                </div>
+            </div>
+            <div class="video-card reveal">
+                <video controls preload="metadata">
+                    <source src="vidéo/Screen_Recording_20260609_070854_Samsung Browser.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+                <div class="video-caption">
+                    <h4>Démonstration 2</h4>
+                    <p>Navigation dans l'application</p>
+                </div>
+            </div>
+            <div class="video-card reveal">
+                <video controls preload="metadata">
+                    <source src="vidéo/Screen_Recording_20260609_071422_Samsung.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+                <div class="video-caption">
+                    <h4>Démonstration 3</h4>
+                    <p>Fonctionnalités avancées</p>
+                </div>
+            </div>
+            <div class="video-card reveal">
+                <video controls preload="metadata">
+                    <source src="vidéo/Screen_Recording_20260609_081457_Samsung.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+                <div class="video-caption">
+                    <h4>Démonstration 4</h4>
+                    <p>Vue complète de la plateforme</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACCESSIBILITÉ & CONFORMITÉ -->
+    <section id="accessibilite">
+        <div class="section-header reveal">
+            <span class="section-tag">Accessibilité & Conformité</span>
+            <h2>Un outil inclusif et conforme</h2>
+            <p>Horizon intègre les enjeux d'accessibilité numérique et de protection des données.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon blue">🛡️</div>
+                <h3>Conformité RGPD</h3>
+                <p>Données personnelles hébergées en Europe. Gestion des consentements, droit d'accès et de suppression garantis. Chiffrement des données sensibles des élèves.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon purple">♿</div>
+                <h3>Accessibilité Dyslexie</h3>
+                <p>Interface compatible avec les troubles dyslexiques : police adaptée, espacement modulable, contraste optimisé et support des outils de lecture assistée.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISION BANNER -->
+    <section>
+        <div class="vision-banner reveal">
+            <h2>Propulser la formation automobile vers le futur</h2>
+            <p>Horizon connecte les apprentissages en atelier avec les realités du terrain professionnel, propulsé par l'intelligence artificielle.</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <img src="images/Logo Horizon BP.png" alt="Horizon Logo">
+                <span>HORIZON BAC PRO & CAP</span>
+            </div>
+            <p>&copy; 2026 Horizon. Tous droits réservés.</p>
+            <p class="footer-tagline">Horizon : Propulser la formation automobile vers le futur.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== NAV SCROLL EFFECT =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== MOBILE NAV =====
+        function toggleNav() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('open');
+            });
+        });
+
+        // ===== TABS =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('content-' + tab).classList.add('active');
+        }
+
+        // ===== LIGHTBOX =====
+        function openLightbox(card) {
+            const img = card.querySelector('img');
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
