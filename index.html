@@ -1537,7 +1537,7 @@
 
     <!-- INTRO FULLSCREEN -->
     <div class="intro-overlay" id="introOverlay">
-        <video id="introVideo" muted autoplay playsinline>
+        <video id="introVideo" muted autoplay loop playsinline>
             <source src="images/intro-horizon.mp4" type="video/mp4">
         </video>
         <button class="intro-mute" id="introMuteBtn" onclick="toggleIntroMute()" aria-label="Activer/Désactiver le son">🔇</button>
@@ -2242,9 +2242,6 @@
             video.muted = !video.muted;
             btn.textContent = video.muted ? '🔇' : '🔊';
         }
-
-        // Fermer l'intro à la fin de la vidéo
-        document.getElementById('introVideo').addEventListener('ended', closeIntro);
 
         // Afficher l'intro si pas encore vue
         if (localStorage.getItem('introSeen')) {
