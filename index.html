@@ -93,6 +93,79 @@
             overflow-x: hidden;
         }
 
+        /* ===== INTRO FULLSCREEN ===== */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .intro-skip {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+        }
+
+        .intro-skip:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .intro-mute {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            z-index: 100000;
+        }
+
+        .intro-mute:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
         /* ===== SKIP LINK ===== */
         .skip-link {
             position: fixed;
@@ -1462,6 +1535,15 @@
 </head>
 <body>
 
+    <!-- INTRO FULLSCREEN -->
+    <div class="intro-overlay" id="introOverlay">
+        <video id="introVideo" muted autoplay playsinline>
+            <source src="images/Vidéo Horizon Bac pro (2).mp4" type="video/mp4">
+        </video>
+        <button class="intro-mute" id="introMuteBtn" onclick="toggleIntroMute()" aria-label="Activer/Désactiver le son">🔇</button>
+        <button class="intro-skip" onclick="closeIntro()">Passer →</button>
+    </div>
+
     <!-- SKIP LINK -->
     <a href="#hero" class="skip-link">Aller au contenu principal</a>
 
@@ -1514,15 +1596,6 @@
                     <div class="stat-value">IA</div>
                     <div class="stat-label">Tutorat intelligent</div>
                 </div>
-            </div>
-            <div class="hero-video">
-                <video id="heroVideo" muted autoplay loop playsinline poster="images/Logo Horizon BP.png" aria-label="Vidéo de présentation de la plateforme Horizon">
-                    <source src="images/intro-horizon.mp4" type="video/mp4">
-                    Votre navigateur ne supporte pas la lecture vidéo.
-                </video>
-                <button class="video-mute-btn" id="muteBtn" onclick="toggleMute()" aria-label="Activer/Désactiver le son">
-                    <span id="muteIcon">🔇</span>
-                </button>
             </div>
         </div>
     </section>
@@ -2146,6 +2219,30 @@
             setTimeout(() => {
                 document.getElementById('cookieBanner').classList.add('show');
             }, 2000);
+        }
+
+        // ===== INTRO FULLSCREEN =====
+        function closeIntro() {
+            const overlay = document.getElementById('introOverlay');
+            const video = document.getElementById('introVideo');
+            video.pause();
+            overlay.classList.add('hidden');
+            localStorage.setItem('introSeen', 'true');
+        }
+
+        function toggleIntroMute() {
+            const video = document.getElementById('introVideo');
+            const btn = document.getElementById('introMuteBtn');
+            video.muted = !video.muted;
+            btn.textContent = video.muted ? '🔇' : '🔊';
+        }
+
+        // Fermer l'intro à la fin de la vidéo
+        document.getElementById('introVideo').addEventListener('ended', closeIntro);
+
+        // Afficher l'intro si pas encore vue
+        if (localStorage.getItem('introSeen')) {
+            document.getElementById('introOverlay').classList.add('hidden');
         }
 
         // ===== VIDEO MUTE TOGGLE =====
