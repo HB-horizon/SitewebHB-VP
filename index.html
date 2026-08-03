@@ -408,6 +408,35 @@
             display: block;
         }
 
+        .hero-video {
+            position: relative;
+        }
+
+        .video-mute-btn {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .video-mute-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
         /* ===== SECTIONS ===== */
         section {
             padding: 6rem 2rem;
@@ -1487,10 +1516,13 @@
                 </div>
             </div>
             <div class="hero-video">
-                <video controls preload="metadata" poster="images/Logo Horizon BP.png" aria-label="Vidéo de présentation de la plateforme Horizon">
-                    <source src="images/Vidéo Horizon Bac pro (2).mp4" type="video/mp4">
+                <video id="heroVideo" muted autoplay loop playsinline poster="images/Logo Horizon BP.png" aria-label="Vidéo de présentation de la plateforme Horizon">
+                    <source src="images/intro-horizon.mp4" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture vidéo.
                 </video>
+                <button class="video-mute-btn" id="muteBtn" onclick="toggleMute()" aria-label="Activer/Désactiver le son">
+                    <span id="muteIcon">🔇</span>
+                </button>
             </div>
         </div>
     </section>
@@ -2114,6 +2146,14 @@
             setTimeout(() => {
                 document.getElementById('cookieBanner').classList.add('show');
             }, 2000);
+        }
+
+        // ===== VIDEO MUTE TOGGLE =====
+        function toggleMute() {
+            const video = document.getElementById('heroVideo');
+            const icon = document.getElementById('muteIcon');
+            video.muted = !video.muted;
+            icon.textContent = video.muted ? '🔇' : '🔊';
         }
 
         // ===== SCROLL TO TOP =====
