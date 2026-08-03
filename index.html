@@ -2233,7 +2233,6 @@
             const video = document.getElementById('introVideo');
             video.pause();
             overlay.classList.add('hidden');
-            localStorage.setItem('introSeen', 'true');
         }
 
         function toggleIntroMute() {
@@ -2241,11 +2240,6 @@
             const btn = document.getElementById('introMuteBtn');
             video.muted = !video.muted;
             btn.textContent = video.muted ? '🔇' : '🔊';
-        }
-
-        // Afficher l'intro si pas encore vue
-        if (localStorage.getItem('introSeen')) {
-            document.getElementById('introOverlay').classList.add('hidden');
         }
 
         // ===== VIDEO MUTE TOGGLE =====
